@@ -1,0 +1,175 @@
+﻿@model ProdutosItems1.Models.Pedido
+@{
+    ViewBag.Title = "Cadastrar";
+    int linhaIndex = 0;
+}
+
+<h2>Cadastrar</h2>
+
+<form action="/" method="post" enctype="multipart/form-data">   
+
+    <div class="form-group row">
+        <label for="NumeroPedido" class="col-md-2 col-form-label"><strong>Nº do Pedido:</strong></label>
+        <div class="col-md-2">
+            @Html.TextBoxFor(a => a.NumeroPedido, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <br>
+
+    <div class="form-group row">        
+        <div class="col-sm-4">
+            <label for="Itens_Produto" class="col-form-label"><strong>Produto</strong></label>           
+            <select style="background-color : lightyellow; color : blue" id="Itens_Produto" name="Itens_Produto" class="form-select" aria-label="">
+                <option selected></option>
+                <option value="H007">Bomba de engrenagem 250 Bar</option>
+                <option value="A001">Capa de cama para cachorro à prova d'água</option>
+                <option value="J009">Desmanchador de costura H12</option>
+                <option value="E005">Disjuntor M12P</option>
+                <option value="G006">Filtro hidráulico aro 16</option>
+                <option value="L010">Luminárias G14</option>
+                <option value="D004">Medidor eletrico katurs 1007X</option>
+                <option value="C003">Relogio katurs 87X</option>
+                <option value="I008">Tesouras de Arremate</option>
+                <option value="B002">Vintage cccp união soviética vostok</option>
+            </select>        
+        </div>
+
+        <div class="col-sm-3">
+            <label for="Itens_Quantidade" class="col-form-label"><strong>Quantidade</strong></label>
+            <input type="number" class="form-control" style="background-color : lightyellow; color : blue" id="Itens_Quantidade" name="Itens_Quantidade" value="0">
+        </div>
+        
+        <div class="col-sm-3">
+            <label for="Itens_Valor" class="col-form-label"><strong>Valor</strong></label>
+            <input type="number" class="form-control" style="background-color : lightyellow; color : blue" id="Itens_Valor" name="Itens_Valor" value="0">            
+        </div>  
+
+        <div class="col-sm-2">
+            <p><br></p>
+            <a href="#" id="link1" onclick="novaLinha()" class="btn btn-primary">Add item</a>
+        </div>
+    </div>
+
+    <br>    
+
+    <div class="row">
+        <table id="dataTable" class="table" style="border:1px solid black;">
+            <thead class="thead-light">
+                <tr>
+                    <td>Produto</td>
+                    <td>Quantidade</td>
+                    <td>Valor</td>
+                    <td></td>
+                </tr>
+            </thead>
+
+            @if (Model.Itens != null && Model.Itens.Count > 0)
+            {
+                foreach (var i in Model.Itens)
+                {
+                    <tr id="composto_@linhaIndex">
+
+                        <td style="display:none;">@Html.TextBoxFor(a => a.Itens[linhaIndex].NumeroPedido)</td>
+                        <td style="display:none;">@Html.TextBoxFor(a => a.Itens[linhaIndex].Codigo)</td>
+                        <td>@Html.TextBoxFor(a => a.Itens[linhaIndex].Produto, new { @class = "form-control" }) </td>
+                        <td>@Html.TextBoxFor(a => a.Itens[linhaIndex].Quantidade, new { @class = "form-control", type = "number" })</td>
+                        <td>@Html.TextBoxFor(a => a.Itens[linhaIndex].Valor, new { @class = "form-control", type = "number" }) </td>
+                        @* <td> @Html.TextBoxFor(a => a.Itens[linhaIndex].File, null, new { type = "file", @class = "input-file" }) </td> *@
+                        <td><a href='#' onClick='removerLinha(composto_@linhaIndex);' class='btn btn-danger'>Excluir</a></td>
+                    </tr>
+                    linhaIndex++;
+                }
+            }
+        </table>
+    </div>
+
+    <div class="row">
+        <button type="submit" class="btn btn-success">Gravar</button>
+    </div>
+    
+</form> 
+
+<script>
+    var qtdeLinhas= @linhaIndex;
+
+    function novaLinha(){
+        var numeroPedido = document.getElementById("NumeroPedido").value;
+        var elemento = document.getElementById("Itens_Produto");
+        var codigo  = elemento.value;
+        var produto =  elemento.options[elemento.selectedIndex].text;
+        var quantidade = document.getElementById("Itens_Quantidade");
+        var valor = document.getElementById("Itens_Valor");
+
+        // 1. Obter referência à tabela        
+        var tabela = document.getElementById("dataTable");
+
+        // 2. Criar a nova linha
+        var novaLinha = tabela.insertRow();        
+        novaLinha.id = "composto_"+qtdeLinhas;
+
+        // 3. Criar as células
+        var celula0 = novaLinha.insertCell(0);
+        var celula1 = novaLinha.insertCell(1);
+        var celula2 = novaLinha.insertCell(2);
+        var celula3 = novaLinha.insertCell(3);
+        var celula4 = novaLinha.insertCell(4);
+        var celula5 = novaLinha.insertCell(5);
+
+        // 4. Preencher as células com conteúdo
+        celula0.hidden = true;
+        celula1.hidden = true;
+
+        celula0.innerHTML = "<input id='Itens_"+qtdeLinhas +"__NumeroPedido' name='Itens["+qtdeLinhas+"].NumeroPedido' type='text' value='"+numeroPedido+"'>";
+        celula1.innerHTML = "<input id='Itens_"+qtdeLinhas +"__Codigo' name='Itens["+qtdeLinhas+"].Codigo' type='text' value='"+codigo+"'>";
+        celula2.innerHTML = "<input class='form-control' id='Itens_"+qtdeLinhas+"__Produto' name='Itens["+qtdeLinhas+"].Produto' type='text' value='"+produto+"'>";
+        celula3.innerHTML = "<input class='form-control' id='Itens_"+qtdeLinhas+"__Quantidade' name='Itens["+qtdeLinhas+"].Quantidade' type='number' value='"+quantidade.value+"'>";
+        celula4.innerHTML = "<input class='form-control' id='Itens_"+qtdeLinhas+"__Valor' name='Itens["+qtdeLinhas+"].Valor' type='number' value='"+valor.value+"'>";
+        celula5.innerHTML = "<a href='#' onClick='removerLinha(composto_"+qtdeLinhas+ ");' class='btn btn-danger'>Excluir</a>";
+
+        qtdeLinhas++;
+
+        //Limpar elemtentos de entrada de itens
+        elemento.value = "";
+        quantidade.value = "";
+        valor.value = "";
+    }
+
+    function removerLinha(id){
+        id.remove();
+
+        var tabela = document.getElementById("dataTable");
+        var linhas = tabela.getElementsByTagName('tr');
+
+        var  indexLinhaRenomeada = 0;
+
+        for (var i = 0; i < linhas.length; i++) {
+            var linha = linhas[i];
+                
+            var entradas   = linha.getElementsByTagName('input');
+
+            if ( entradas.length == 5){
+
+                 debugger;
+
+                linha.id = "compostos_" + indexLinhaRenomeada;
+                entradas[1].name  = "Itens["+indexLinhaRenomeada+"].Codigo";
+                entradas[2].name  = "Itens["+indexLinhaRenomeada+"].Produto";
+                entradas[3].name  = "Itens["+indexLinhaRenomeada+"].Quantidade";
+                entradas[4].name  = "Itens["+indexLinhaRenomeada+"].Valor";
+
+                link   = linha.getElementsByTagName('td');
+                link[5].innerHTML = "<a href='#' onClick='removerLinha("+ linha.id + ");' class='btn btn-danger'>Excluir</a>";
+
+                debugger;
+
+                indexLinhaRenomeada++;
+                    
+            } else {
+                continue;
+            }  
+        }
+
+        qtdeLinhas = indexLinhaRenomeada;
+    }
+</script>
