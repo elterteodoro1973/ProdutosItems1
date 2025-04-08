@@ -91,7 +91,7 @@
 </form> 
 
 <script>
-    var qtdeLinhas= @linhaIndex;
+    var qtdeLinhas= @linhaIndex
 
     function novaLinha(){
         var numeroPedido = document.getElementById("NumeroPedido").value;
@@ -140,18 +140,13 @@
 
         var tabela = document.getElementById("dataTable");
         var linhas = tabela.getElementsByTagName('tr');
-
         var  indexLinhaRenomeada = 0;
 
         for (var i = 0; i < linhas.length; i++) {
-            var linha = linhas[i];
-                
+            var linha = linhas[i];                
             var entradas   = linha.getElementsByTagName('input');
 
             if ( entradas.length == 5){
-
-                 debugger;
-
                 linha.id = "compostos_" + indexLinhaRenomeada;
                 entradas[1].name  = "Itens["+indexLinhaRenomeada+"].Codigo";
                 entradas[2].name  = "Itens["+indexLinhaRenomeada+"].Produto";
@@ -161,10 +156,7 @@
                 link   = linha.getElementsByTagName('td');
                 link[5].innerHTML = "<a href='#' onClick='removerLinha("+ linha.id + ");' class='btn btn-danger'>Excluir</a>";
 
-                debugger;
-
-                indexLinhaRenomeada++;
-                    
+                indexLinhaRenomeada++;                    
             } else {
                 continue;
             }  
