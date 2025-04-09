@@ -136,14 +136,17 @@
     }
 
     function removerLinha(id){
-        id.remove();
+        id.remove();   
+        renomearLinhas();
+    }
 
+    function renomearLinhas(){
         var tabela = document.getElementById("dataTable");
         var linhas = tabela.getElementsByTagName('tr');
         var  indexLinhaRenomeada = 0;
 
         for (var i = 0; i < linhas.length; i++) {
-            var linha = linhas[i];                
+            var linha = linhas[i];
             var entradas   = linha.getElementsByTagName('input');
 
             if ( entradas.length == 5){
@@ -156,10 +159,10 @@
                 link   = linha.getElementsByTagName('td');
                 link[5].innerHTML = "<a href='#' onClick='removerLinha("+ linha.id + ");' class='btn btn-danger'>Excluir</a>";
 
-                indexLinhaRenomeada++;                    
+                indexLinhaRenomeada++;
             } else {
                 continue;
-            }  
+            }
         }
 
         qtdeLinhas = indexLinhaRenomeada;
